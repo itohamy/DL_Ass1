@@ -35,6 +35,7 @@ from tensorflow.examples.tutorials.mnist import mnist
 FLAGS = None
 
 def my_graph(input_images):
+    
     new_input = tf.reshape(input_images, [-1, 28, 28, 1])
 
 
@@ -45,41 +46,43 @@ def my_graph(input_images):
             padding="same",
             activation=tf.nn.relu)
     
-    # We get 28 * 28 * 32
+
     
     pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
     
-    # We get 14 * 14 * 32
+    # 14*14*32
     
     conv2 = tf.layers.conv2d(
         inputs=pool1,
         filters=64,
-        kernel_size=[5, 5], # this kernel should be 3D ? (what about the 32 kernels of last layer)
+        kernel_size=[5, 5],
         padding="same",
         activation=tf.nn.relu)
     
-    # We get 14 * 14 * 64
+    # 14*14*64
     
     pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
     
-    # We get 7 * 7 * 64
+    # 7*7*64
     
     pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
-    
-    dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
-  
-    
-    logits = tf.layers.dense(inputs=dense, units=10)
+        
+    dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)    
+    dropout = tf.layers.dropout(inputs=dense, rate=0.2)
+    logits = tf.layers.dense(inputs=dropout, units=10)
       
     return logits
 
 
 def placeholder_inputs(batch_size):
   """Generate placeholder variables to represent the input tensors.
+
   These placeholders are used as inputs by the rest of the model building
   code and will be fed from the downloaded data in the .run() loop, below.
+
   Args:
     batch_size: The batch size will be baked into both placeholders.
+
   Returns:
     images_placeholder: Images placeholder.
     labels_placeholder: Labels placeholder.
@@ -95,15 +98,18 @@ def placeholder_inputs(batch_size):
 
 def fill_feed_dict(data_set, images_pl, labels_pl):
   """Fills the feed_dict for training the given step.
+
   A feed_dict takes the form of:
   feed_dict = {
       <placeholder>: <tensor of values to be passed for placeholder>,
       ....
   }
+
   Args:
     data_set: The set of images and labels, from input_data.read_data_sets()
     images_pl: The images placeholder, from placeholder_inputs().
     labels_pl: The labels placeholder, from placeholder_inputs().
+
   Returns:
     feed_dict: The feed dictionary mapping from placeholders to values.
   """
@@ -124,6 +130,7 @@ def do_eval(sess,
             labels_placeholder,
             data_set):
   """Runs one evaluation against the full epoch of data.
+
   Args:
     sess: The session in which the model has been trained.
     eval_correct: The Tensor that returns the number of correct predictions.
@@ -269,7 +276,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--max_steps',
       type=int,
-      default=2000,
+      default=4000,
       help='Number of steps to run trainer.'
   )
   parser.add_argument(
