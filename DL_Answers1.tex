@@ -13,6 +13,7 @@
 \usepackage[normalem]{ulem}
 
 
+
 \lstdefinestyle{PyStyle}{
 	backgroundcolor=\color{pink},   
 	commentstyle=\color{mGreen},
@@ -47,7 +48,7 @@
 \title{Deep Learning 182, HW \#1}
 \author{
 Roy Uziel\\
-111111111111
+203398854
 \and Irit Chelly\\
 021565510
 }
@@ -88,10 +89,75 @@ pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
 
 \item
 Convolutional Layer 2:\\
+\begin{lstlisting}[style=PyStyle]
+  conv2 = tf.layers.conv2d(
+        inputs=pool1,
+        filters=64,
+        kernel_size=[5, 5],
+        padding="same",
+        activation=tf.nn.relu)
+\end{lstlisting}
+
+\item
+Pooling Layer 2:\\
+\begin{lstlisting}[style=PyStyle]
+      pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
+\end{lstlisting}
+
+\item
+Reshaping
+\begin{lstlisting}[style=PyStyle]
+         pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
+\end{lstlisting}
+
+\item
+Dense
+\begin{lstlisting}[style=PyStyle]
+         dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)    
+\end{lstlisting}
+
+\item
+Dropout
+\begin{lstlisting}[style=PyStyle]
+    dropout = tf.layers.dropout(inputs=dense, rate=0.2)
+)    
+\end{lstlisting}
+
+\item
+Output
+\begin{lstlisting}[style=PyStyle]
+    logits = tf.layers.dense(inputs=dropout, units=10)
+\end{lstlisting}
+
+
+
+
+
+
 
 \end{enumerate}
 
+\newpage
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{Graphs.png}
+  \caption{Tensorboard : Structure Graphs}
+  \label{fig:boat1}
+\end{figure}
  
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{Loss.png}
+  \caption{Tensorboard : Loss Over Time}
+  \label{fig:boat1}
+\end{figure}
+
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{spyder-console.png}
+  \caption{Console Results}
+  \label{fig:boat1}
+\end{figure}
 
 	5.2 attach a short document describing the network architecture and any other architectures that you tested
 
