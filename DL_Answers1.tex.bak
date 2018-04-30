@@ -152,7 +152,7 @@ The output layer is 10 neurons, each neuron is a classifier for one digit. This 
 
 \section{Results}
 
-Below are the script results after running with ???? batches, reaching precision of $0.97$:\\
+Below are the script results after running with 100 batches and 4000 steps to run the trainer, reaching precision of $0.97$:\\
 
 Training Data Eval:\\
 Num examples: 55000  Num correct: 53798  Precision @ 1: 0.9781\\
@@ -161,6 +161,13 @@ Num examples: 5000  Num correct: 4896  Precision @ 1: 0.9792\\
 Test Data Eval:\\
 Num examples: 10000  Num correct: 9778  Precision @ 1: 0.9778\\
 An exception has occurred, use \\
+
+\begin{figure}[H]
+\caption{Loss Function Graph}
+\centering
+  \includegraphics[width=\linewidth]{Loss.png}
+\end{figure}
+
 
 \begin{figure}[H]
 \caption{Loss Function Graph}
