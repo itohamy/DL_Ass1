@@ -9,11 +9,19 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{float}
 \usepackage{textcomp}
 \usepackage[normalem]{ulem}
-
-
-
+\usepackage{geometry}
+\usepackage{xcolor}
+ \geometry{
+ a4paper,
+ total={170mm,235mm},
+ left=15mm,
+ right=15mm,
+ top=25mm,
+ }
+ 
 \lstdefinestyle{PyStyle}{
 	backgroundcolor=\color{pink},   
 	commentstyle=\color{mGreen},
@@ -81,7 +89,7 @@ We then compute the activation function relu on the result of each neuron:
 
 \item
 Pooling Layer 1:\\
-Here we reduce	 the spatial size of the conv. layer by using a Max Pooling filter of size 2*2 and apply the maximum value of each 2*2 sized part of the image (Convolutional Layer 1): 
+Here we reduce	 the spatial size of the conv. layer by using a Max Pooling filter of size 2*2 and apply the maximum value of each 2*2 sized part of the image (Convolutional Layer 1). After this step we will have 14*14*32 neurons.: 
 
 \begin{lstlisting}[style=PyStyle]
 pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
@@ -89,6 +97,7 @@ pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
 
 \item
 Convolutional Layer 2:\\
+Here we used 64 filters, each filter is a kernel of size 5*5:
 \begin{lstlisting}[style=PyStyle]
   conv2 = tf.layers.conv2d(
         inputs=pool1,
@@ -100,70 +109,64 @@ Convolutional Layer 2:\\
 
 \item
 Pooling Layer 2:\\
+After this step we will have 7*7*64 neurons:
 \begin{lstlisting}[style=PyStyle]
       pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
 \end{lstlisting}
 
 \item
-Reshaping
+Reshaping:
 \begin{lstlisting}[style=PyStyle]
          pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
 \end{lstlisting}
 
 \item
-Dense
+Dense:\\
+This layer is fully connected: we picked 1024 neurons in this layer that are fully connected to the neurons from the previous layer ("Pooling Layer 2"):
 \begin{lstlisting}[style=PyStyle]
          dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)    
 \end{lstlisting}
 
 \item
-Dropout
+Dropout:
 \begin{lstlisting}[style=PyStyle]
     dropout = tf.layers.dropout(inputs=dense, rate=0.2)
-)    
 \end{lstlisting}
 
 \item
-Output
+Output:\\
+The output layer is 10 neurons, each neuron is a classifier for one digit. This layer is full connected to the previous layer:
 \begin{lstlisting}[style=PyStyle]
     logits = tf.layers.dense(inputs=dropout, units=10)
 \end{lstlisting}
 
-
-
-
-
-
-
 \end{enumerate}
+
+\begin{figure}[H]
+\caption{Architecture Description Graph}
+\centering
+\includegraphics[width=\linewidth]{Graphs.png}
+\end{figure}
 
 \newpage
 
-\begin{figure}
-  \includegraphics[width=\linewidth]{Graphs.png}
-  \caption{Tensorboard : Structure Graphs}
-  \label{fig:boat1}
-\end{figure}
- 
+\section{Results}
 
-\begin{figure}
+Below are the script results after running with ???? batches, reaching precision of $0.97$:\\
+
+Training Data Eval:\\
+Num examples: 55000  Num correct: 53798  Precision @ 1: 0.9781\\
+Validation Data Eval:\\
+Num examples: 5000  Num correct: 4896  Precision @ 1: 0.9792\\
+Test Data Eval:\\
+Num examples: 10000  Num correct: 9778  Precision @ 1: 0.9778\\
+An exception has occurred, use \\
+
+\begin{figure}[H]
+\caption{Loss Function Graph}
+\centering
   \includegraphics[width=\linewidth]{Loss.png}
-  \caption{Tensorboard : Loss Over Time}
-  \label{fig:boat1}
 \end{figure}
 
-
-\begin{figure}
-  \includegraphics[width=\linewidth]{spyder-console.png}
-  \caption{Console Results}
-  \label{fig:boat1}
-\end{figure}
-
-	5.2 attach a short document describing the network architecture and any other architectures that you tested
-
-	5.3 Make sure to have your full name and ID on the top of the document
-
-	5.4 It is recommended to add tensorboard screenshots that describe the results (Optional)
-	
 
 \end{document}
