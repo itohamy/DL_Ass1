@@ -129,6 +129,9 @@ This layer is fully connected: we picked 1024 neurons in this layer that are ful
 
 \item
 Dropout:
+Method to reduce overfitting.
+At each training stage, individual nodes are either "dropped out" of the net or kept. 
+
 \begin{lstlisting}[style=PyStyle]
     dropout = tf.layers.dropout(inputs=dense, rate=0.2)
 \end{lstlisting}
@@ -148,10 +151,11 @@ The output layer is 10 neurons, each neuron is a classifier for one digit. This 
 \includegraphics[width=\linewidth]{Graphs.png}
 \end{figure}
 
-\newpage
+\newpage	
 
 \section{Results}
-
+At first we started with 32 filters in the second  convolutional layer, we saw that increasing the number of filters to 64 improve our results. \\
+Another improvement was made by adding the drop-out layer. \\
 Below are the script results after running with 100 batches and 4000 steps to run the trainer, reaching precision of $0.97$:\\
 
 Training Data Eval:\\
@@ -160,7 +164,10 @@ Validation Data Eval:\\
 Num examples: 5000  Num correct: 4896  Precision @ 1: 0.9792\\
 Test Data Eval:\\
 Num examples: 10000  Num correct: 9778  Precision @ 1: 0.9778\\
-An exception has occurred, use \\
+
+
+
+
 
 \begin{figure}[H]
 \caption{Loss Function Graph}
